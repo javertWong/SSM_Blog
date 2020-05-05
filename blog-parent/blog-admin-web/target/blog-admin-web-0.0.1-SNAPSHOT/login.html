@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<title>登录/注册</title>
+	<link rel="stylesheet" href="./css/auth.css">
+	<script type="text/javascript" src="plugins/jQuery/jquery-2.2.3.min.js"></script>
+	<script type="text/javascript" src="plugins/angularjs/angular.min.js"></script>
+	
+	
+	<script type="text/javascript" src="js/base.js"></script>
+	<script type="text/javascript" src="js/service/adminService.js"></script>
+	<script type="text/javascript" src="js/controller/baseController.js"></script>
+	<script type="text/javascript" src="js/controller/adminController.js"></script>
+</head>
+
+<body ng-app="blog" ng-controller="adminController">
+	<div class="lowin">
+		<div class="lowin-brand">
+			<img src="./img/kodinger.jpg" alt="logo">
+		</div>
+		<div class="lowin-wrapper">
+			<div class="lowin-box lowin-login">
+				<div class="lowin-box-inner">
+					<form action="/login" method="post" id="loginform">
+						<p>登录</p>
+						<div class="lowin-group">
+							<label>账号</label>
+							<input type="account" autocomplete="account" name="username" class="lowin-input">
+						</div>
+						<div class="lowin-group password-group">
+							<label>密码 <a href="#" class="forgot-link">忘记密码?</a></label>
+							<input type="password" name="password" autocomplete="current-password" class="lowin-input">
+						</div>
+						<button class="lowin-btn login-btn" onclick="document:loginform.submit()">
+							登录
+						</button>
+
+						<div class="text-foot">
+							没有账号? <a href="" class="register-link" >注册</a>
+						</div>
+					</form>
+				</div>
+			</div>
+
+			<div class="lowin-box lowin-register">
+				<div class="lowin-box-inner">
+					<form>
+						<p>创建账户</p>
+						<div class="lowin-group">
+							<label>账号</label>
+							<input type="account" ng-model="registerEntity.account" autocomplete="account" name="account" class="lowin-input">
+						</div>
+						<div class="lowin-group">
+							<label>密码</label>
+							<input type="password" ng-model="registerEntity.password" name="password" autocomplete="current-password" class="lowin-input">
+						</div>
+						<div class="lowin-group password-group">
+							<label>确认密码 <a href="#" class="forgot-link"></a></label>
+							<input type="password" ng-model="registerEntity.surepassword" name="surepassword" autocomplete="current-password" class="lowin-input">
+						</div>
+						<button class="lowin-btn" ng-click="add()">
+							注册
+						</button>
+
+						<div class="text-foot">
+							已有账户? <a href="" class="login-link" >登录</a>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	
+	</div>
+
+	<script src="./plugins/auth.js"></script>
+	<script>
+		Auth.init({
+			login_url: '#login',
+			forgot_url: '#forgot'
+		});
+	</script>
+</body>
+</html>

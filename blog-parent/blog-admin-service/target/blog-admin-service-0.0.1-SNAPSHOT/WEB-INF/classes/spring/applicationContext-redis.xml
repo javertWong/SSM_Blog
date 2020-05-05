@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:cache="http://www.springframework.org/schema/cache"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans   
+            http://www.springframework.org/schema/beans/spring-beans.xsd   
+            http://www.springframework.org/schema/context   
+            http://www.springframework.org/schema/context/spring-context.xsd   
+            http://www.springframework.org/schema/mvc   
+            http://www.springframework.org/schema/mvc/spring-mvc.xsd 
+            http://www.springframework.org/schema/cache  
+            http://www.springframework.org/schema/cache/spring-cache.xsd">
+
+	<context:property-placeholder location="classpath*:properties/*.properties" />
+
+	<!-- 初始化Jedis连接池 -->
+	<bean id="poolConfig" class="redis.clients.jedis.JedisPoolConfig">
+		<!--最大连接数, 默认8个 -->
+		<property name="maxTotal" value="50" />
+		<!--最大空闲连接数, 默认8 -->
+		<property name="maxIdle" value="10" />
+		<!--连接时的最大等待毫秒数 -->
+		<property name="maxWaitMillis" value="1000" />
+		<!--获得一个jedis实例的时候是否检查连接可用性 -->
+		<property name="testOnBorrow" value="true" />
+	</bean>
+	<!-- 把jedisPool交给spring管理 -->
+	<bean id="jedisPool" class="redis.clients.jedis.JedisPool">
+		<constructor-arg name="poolConfig" ref="poolConfig"></constructor-arg>
+		<constructor-arg name="host" value="127.0.0.1"></constructor-arg>
+		<constructor-arg name="port" value="6379"></constructor-arg>
+	</bean>
+	<bean id="RedisCache" class="com.blog.util.RedisCache">
+		<property name="jedisPool" ref="jedisPool" />
+	</bean>
+</beans>  

@@ -1,0 +1,13 @@
+entity\PageResult.class
+entity\Result.class
+com\blog\pojo\BlogExample$Criteria.class
+entity\ManagerMethodUseLog.class
+com\blog\pojo\AdminExample$Criterion.class
+com\blog\pojo\AdminExample$Criteria.class
+com\blog\pojo\BlogExample$Criterion.class
+com\blog\pojo\BlogExample.class
+com\blog\pojo\Blog.class
+com\blog\pojo\BlogExample$GeneratedCriteria.class
+com\blog\pojo\AdminExample.class
+com\blog\pojo\AdminExample$GeneratedCriteria.class
+com\blog\pojo\Admin.class

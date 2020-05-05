@@ -1,0 +1,3 @@
+com\blog\utils\StringUtil.class
+com\blog\utils\SerializeUtil.class
+com\blog\utils\FastDFSClient.class

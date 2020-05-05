@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:dubbo="http://code.alibabatech.com/schema/dubbo" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+        http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+	<!-- 配置属性文件 -->
+	<bean id="propertyConfigurer"
+		class="com.blog.util.ExtendedPropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>classpath*:properties/cachedmethod.properties</value>
+				<value>classpath*:properties/redis-config.properties</value>
+			</list>
+		</property>
+	</bean>
+    <dubbo:protocol name="dubbo" port="20881"></dubbo:protocol>
+    
+	<dubbo:application name="blog-admin-service"/>  
+    <dubbo:registry address="zookeeper://192.168.204.102:2181"/>
+    <dubbo:annotation package="com.blog.service.impl" />  
+   	<!-- 用于获取Spring容器中的bean对象 -->
+	<bean class="com.blog.util.SpringUtil" scope="singleton" />
+	
+	
+    <!--  激活自动代理功能,声明切面的实例,
+    proxy-target-class 属性控制是基于接口的还是基于类的代理被创建。
+    true为基于类的代理创建,false是基于接口的代理被创建-->
+    <aop:aspectj-autoproxy proxy-target-class="true"/>
+    <!-- 系统服务组件的切面Bean -->
+    <bean id="cacheAspect" class="com.blog.aspect.CacheAspect"></bean>
+    <!-- AOP配置 -->
+    <aop:config>
+    	<aop:pointcut expression="execution(* com.blog.service.impl..*.*(..))" id="aspectPointcut"/>
+        <!--  指定切面的Bean,相当于@Aspect,order:设置优先级-->
+        <aop:aspect id="cacheAspectPointcut" ref="cacheAspect">
+            <!-- 配置一个切入点,相当于@Pointcut -->
+            <aop:around pointcut-ref="aspectPointcut" method="doAround"/>
+        </aop:aspect>
+    </aop:config>
+</beans>
